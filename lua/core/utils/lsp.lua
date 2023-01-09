@@ -47,7 +47,8 @@ astronvim.lsp.setup = function(server)
     if type(user_registration) == "function" then
       user_registration(server, opts)
     else
-      require("lspconfig")[server].setup(opts)
+      -- require("lspconfig")[server].setup(opts)
+      
     end
   end
 end
@@ -222,22 +223,22 @@ astronvim.lsp.flags = user_plugin_opts "lsp.flags"
 -- @param  server_name the name of the server
 -- @return the table of LSP options used when setting up the given language server
 function astronvim.lsp.server_settings(server_name)
-  local server = require("lspconfig")[server_name]
-  local opts = user_plugin_opts( -- get user server-settings
-    "lsp.server-settings." .. server_name, -- TODO: RENAME lsp.server-settings to lsp.config in v3
-    user_plugin_opts("server-settings." .. server_name, { -- get default server-settings
-      capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
-      flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
-    }, true, "configs")
-  )
-  local old_on_attach = server.on_attach
-  local user_on_attach = opts.on_attach
-  opts.on_attach = function(client, bufnr)
-    conditional_func(old_on_attach, true, client, bufnr)
-    astronvim.lsp.on_attach(client, bufnr)
-    conditional_func(user_on_attach, true, client, bufnr)
-  end
-  return opts
+  --local server = require("lspconfig")[server_name]
+  --local opts = user_plugin_opts( -- get user server-settings
+  --  "lsp.server-settings." .. server_name, -- TODO: RENAME lsp.server-settings to lsp.config in v3
+  --  user_plugin_opts("server-settings." .. server_name, { -- get default server-settings
+  --    capabilities = vim.tbl_deep_extend("force", astronvim.lsp.capabilities, server.capabilities or {}),
+  --    flags = vim.tbl_deep_extend("force", astronvim.lsp.flags, server.flags or {}),
+  --  }, true, "configs")
+  --)
+  --local old_on_attach = server.on_attach
+  --local user_on_attach = opts.on_attach
+  --opts.on_attach = function(client, bufnr)
+  --  conditional_func(old_on_attach, true, client, bufnr)
+  --  astronvim.lsp.on_attach(client, bufnr)
+  --  conditional_func(user_on_attach, true, client, bufnr)
+  -- end
+  -- return opts
 end
 
 return astronvim.lsp
